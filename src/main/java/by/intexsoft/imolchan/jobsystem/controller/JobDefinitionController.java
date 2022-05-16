@@ -27,6 +27,7 @@ public class JobDefinitionController {
     private final JobDefinitionService jobDefinitionService;
 
     @PostMapping
+    @JsonView(CrudView.READ.class)
     public JobDefinitionDTO createJobDefinition(
             @JsonView(CrudView.CREATE.class)
             @Valid

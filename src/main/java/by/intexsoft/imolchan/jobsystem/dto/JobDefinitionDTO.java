@@ -7,6 +7,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Data
 public class JobDefinitionDTO {
@@ -22,11 +23,15 @@ public class JobDefinitionDTO {
     @ValidCronExpression
     private String cronExpression;
 
+    @JsonView({CrudView.READ.class})
+    private LocalDateTime nextRun;
+
     @JsonView({CrudView.CREATE.class, CrudView.UPDATE.class, CrudView.READ.class})
     @NotNull
     private Long jobTypeId;
 
     @JsonView({CrudView.CREATE.class, CrudView.UPDATE.class, CrudView.READ.class})
+    @NotNull
     private Object payload;
 
     @JsonView({CrudView.CREATE.class})

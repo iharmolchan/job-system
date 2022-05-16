@@ -1,10 +1,13 @@
 package by.intexsoft.imolchan.jobsystem.entity;
 
 import by.intexsoft.imolchan.jobsystem.validation.ValidCronExpression;
+import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -19,11 +22,19 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
+@TypeDef(
+        name = "json",
+        typeClass = JsonStringType.class
+)
 public class JobDefinition extends BaseEntity {
     private String name;
 
+    @Type(type = "json")
+    private Object payload;
+
     @ValidCronExpression
     private String cronExpression;
+
     private LocalDateTime nextRun;
 
     @ManyToOne
