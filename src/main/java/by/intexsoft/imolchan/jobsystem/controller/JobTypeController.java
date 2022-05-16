@@ -30,7 +30,11 @@ public class JobTypeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public JobTypeDTO createJobType(@JsonView(CrudView.CREATE.class) @Valid @RequestBody JobTypeDTO jobTypeDTO) {
+    public JobTypeDTO createJobType(
+            @JsonView(CrudView.CREATE.class)
+            @Valid
+            @RequestBody JobTypeDTO jobTypeDTO
+    ) {
         log.info("Creating job type: {}", jobTypeDTO);
         return jobTypeService.saveJobType(jobTypeDTO);
     }
@@ -38,7 +42,9 @@ public class JobTypeController {
     @PutMapping
     @JsonView(CrudView.READ.class)
     public JobTypeDTO updateJobType(
-            @JsonView(CrudView.UPDATE.class) @Validated(CrudView.UPDATE.class) @RequestBody JobTypeDTO jobTypeDTO
+            @JsonView(CrudView.UPDATE.class)
+            @Validated(CrudView.UPDATE.class)
+            @RequestBody JobTypeDTO jobTypeDTO
     ) {
         log.info("Updating job type: {}", jobTypeDTO);
         return jobTypeService.saveJobType(jobTypeDTO);
@@ -47,7 +53,7 @@ public class JobTypeController {
     @JsonView(CrudView.READ.class)
     @GetMapping
     public List<JobTypeDTO> getAllJobTypes() {
-        log.info("Creating all job types");
+        log.info("Getting all job types");
         return jobTypeService.getAll();
     }
 
