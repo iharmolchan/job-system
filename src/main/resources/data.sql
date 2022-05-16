@@ -8,7 +8,7 @@ VALUES (10002, 'Email', 'email_handler');
 /* Job definitions */
 
 INSERT INTO job_definitions (id, job_type_id, name, cron_expression, next_run, payload)
-VALUES (10001, 10001, 'Some default definition', '0 */3 * ? * *', DATEADD(minute, 3, NOW()), '{}');
+VALUES (10001, 10001, 'Some default definition', '0 */1 * ? * *', DATEADD(minute, 1, NOW()), '{}');
 
 INSERT INTO job_definitions (id, job_type_id, name, cron_expression, next_run, payload)
-VALUES (10002, 10001, 'Another default definition', '0 */5 * ? * *', DATEADD(minute, 5, NOW()), '{"data": "some string"}');
+VALUES (10002, 10001, 'Another default definition', '0 */2 * ? * *', DATEADD(minute, 2, NOW()), '{"data": "some string"}');

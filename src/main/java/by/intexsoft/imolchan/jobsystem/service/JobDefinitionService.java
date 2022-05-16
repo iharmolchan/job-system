@@ -4,9 +4,9 @@ import by.intexsoft.imolchan.jobsystem.dto.JobDefinitionDTO;
 import by.intexsoft.imolchan.jobsystem.entity.JobDefinition;
 import by.intexsoft.imolchan.jobsystem.exception.EntityNotFoundException;
 import by.intexsoft.imolchan.jobsystem.repository.JobDefinitionRepository;
+import by.intexsoft.imolchan.jobsystem.util.CronUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.scheduling.support.CronExpression;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -22,7 +22,7 @@ public class JobDefinitionService {
     public JobDefinitionDTO saveJobDefinition(JobDefinitionDTO jobDefinitionDTO) {
         JobDefinition jobDefinition = modelMapper.map(jobDefinitionDTO, JobDefinition.class);
 
-        LocalDateTime jobNextRun = getNextRunFromCronExpression(jobDefinitionDTO.getCronExpression());
+        LocalDateTime jobNextRun = CronUtils.getNextRunFromCronExpression(jobDefinitionDTO.getCronExpression());
         jobDefinition.setNextRun(jobNextRun);
 
         return modelMapper.map(jobDefinitionRepository.save(jobDefinition), JobDefinitionDTO.class);
@@ -42,12 +42,6 @@ public class JobDefinitionService {
 
     public void deleteById(Long id) {
         jobDefinitionRepository.deleteById(id);
-    }
-
-
-    private LocalDateTime getNextRunFromCronExpression(String cronString) {
-        CronExpression expression = CronExpression.parse(cronString);
-        return expression.next(LocalDateTime.now());
     }
 
     @PostConstruct
