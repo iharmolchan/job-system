@@ -15,6 +15,6 @@ import javax.persistence.Table;
 @Setter
 @ToString
 public class JobType extends BaseEntity{
-    String name;
-    String handlerClass;
+    private String name;
+    private String handlerName;
 }
