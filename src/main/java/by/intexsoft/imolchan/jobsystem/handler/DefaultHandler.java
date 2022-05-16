@@ -5,6 +5,7 @@ import by.intexsoft.imolchan.jobsystem.repository.JobRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.security.SecureRandom;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 
@@ -13,25 +14,27 @@ import java.util.concurrent.ExecutorService;
 public class DefaultHandler extends AbstractJobHandler {
     public static final String BEAN_NAME = "default_handler";
 
+    private final Random random = new Random();
+
     protected DefaultHandler(ExecutorService executor, JobRepository jobRepository) {
         super(executor, jobRepository);
     }
 
     @Override
     public void handle(Job job) {
-        int randomInt = new Random().nextInt(10);
+        int randomInt = random.nextInt(10);
         log.info("Random int: {}", randomInt);
 
         for (int i = 0; i < randomInt; i++) {
             if (shouldBeStopped.contains(job.getId())) {
-                break;
+                return;
             }
 
             log.info("JOB ID: {}, JOB PAYLOAD: {}", job.getId(), job.getJobDefinition().getPayload());
             try {
                 Thread.sleep(10000);
             } catch (InterruptedException e) {
-                break;
+                Thread.currentThread().interrupt();
             }
         }
     }
