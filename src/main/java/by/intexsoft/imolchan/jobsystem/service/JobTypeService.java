@@ -1,14 +1,13 @@
 package by.intexsoft.imolchan.jobsystem.service;
 
-import by.intexsoft.imolchan.jobsystem.repository.JobTypeRepository;
 import by.intexsoft.imolchan.jobsystem.dto.JobTypeDTO;
 import by.intexsoft.imolchan.jobsystem.entity.JobType;
 import by.intexsoft.imolchan.jobsystem.exception.EntityNotFoundException;
+import by.intexsoft.imolchan.jobsystem.repository.JobTypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static by.intexsoft.imolchan.jobsystem.util.DtoConverter.convert;
 
@@ -31,7 +30,7 @@ public class JobTypeService {
     public List<JobTypeDTO> getAll() {
         return jobTypeRepository.findAll().stream()
                 .map(jobType -> convert(jobType, JobTypeDTO.class))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public void deleteById(Long id) {
