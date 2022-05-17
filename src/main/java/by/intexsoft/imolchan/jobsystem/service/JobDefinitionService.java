@@ -6,6 +6,7 @@ import by.intexsoft.imolchan.jobsystem.exception.EntityNotFoundException;
 import by.intexsoft.imolchan.jobsystem.repository.JobDefinitionRepository;
 import by.intexsoft.imolchan.jobsystem.util.CronUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class JobDefinitionService {
     private final JobDefinitionRepository jobDefinitionRepository;
     private final ModelMapper modelMapper;
@@ -22,8 +24,10 @@ public class JobDefinitionService {
     public JobDefinitionDTO saveJobDefinition(JobDefinitionDTO jobDefinitionDTO) {
         JobDefinition jobDefinition = modelMapper.map(jobDefinitionDTO, JobDefinition.class);
 
+        log.info("Calculating next run date time for job definition with id: {}", jobDefinitionDTO.getId());
         LocalDateTime jobNextRun = CronUtils.getNextRunFromCronExpression(jobDefinitionDTO.getCronExpression());
         jobDefinition.setNextRun(jobNextRun);
+        log.info("Next run for the job definition {} set to {}.", jobDefinitionDTO.getId(), jobNextRun);
 
         return modelMapper.map(jobDefinitionRepository.save(jobDefinition), JobDefinitionDTO.class);
     }
@@ -46,6 +50,7 @@ public class JobDefinitionService {
 
     @PostConstruct
     private void addJobDefinitionMappings() {
+        log.debug("Adding mappings for JobDefinition and JobDefinitionDTO classes.");
         modelMapper.createTypeMap(JobDefinition.class, JobDefinitionDTO.class).addMappings(
                 mapper -> mapper.map(
                         jobDefinition -> jobDefinition.getJobType().getId(),

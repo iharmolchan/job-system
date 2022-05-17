@@ -5,7 +5,6 @@ import by.intexsoft.imolchan.jobsystem.repository.JobRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.security.SecureRandom;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 
@@ -22,6 +21,7 @@ public class DefaultHandler extends AbstractJobHandler {
 
     @Override
     public void handle(Job job) {
+        log.info("Starting handling job with id: {}", job.getId());
         int randomInt = random.nextInt(10);
         log.info("Random int: {}", randomInt);
 

@@ -62,6 +62,7 @@ public class JobService {
     }
 
     private void createAndRunJob(JobDefinition jobDefinition) {
+        log.info("Creating job and sending it to a job handler.");
         Job job = Job.builder()
                 .status(JobStatus.PENDING)
                 .jobDefinition(jobDefinition)
@@ -98,6 +99,7 @@ public class JobService {
 
     @PostConstruct
     private void addJobDefinitionMappings() {
+        log.debug("Adding mappings for Job and JobDTO classes.");
         modelMapper.createTypeMap(Job.class, JobDTO.class)
                 .addMappings(
                         mapper -> mapper.map(job -> job.getJobDefinition().getPayload(), JobDTO::setPayload)

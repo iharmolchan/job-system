@@ -3,12 +3,14 @@ package by.intexsoft.imolchan.jobsystem.handler;
 import by.intexsoft.imolchan.jobsystem.entity.JobStatus;
 import by.intexsoft.imolchan.jobsystem.entity.Job;
 import by.intexsoft.imolchan.jobsystem.repository.JobRepository;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
+@Slf4j
 public abstract class AbstractJobHandler implements JobHandler {
     protected final List<Long> shouldBeStopped;
     private final ExecutorService executor;
@@ -23,6 +25,7 @@ public abstract class AbstractJobHandler implements JobHandler {
 
     @Override
     public void run(Job job) {
+        log.info("Preparing and submitting job with id {} to executor service.", job.getId());
         Runnable runnable = () -> {
             try {
                 setInProgressStatus(job);
