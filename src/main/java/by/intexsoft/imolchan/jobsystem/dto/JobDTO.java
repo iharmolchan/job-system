@@ -7,7 +7,8 @@ import java.time.LocalDateTime;
 
 @Data
 public class JobDTO {
-    private JobStatus jobStatus;
+    private Long id;
+    private JobStatus status;
     private LocalDateTime start;
     private LocalDateTime end;
     private Object payload;
