@@ -37,7 +37,4 @@ public class JobDefinitionDTO {
     @JsonView({CrudView.CREATE.class, CrudView.UPDATE.class, CrudView.READ.class})
     @NotNull
     private Object payload;
-
-    @JsonView({CrudView.CREATE.class})
-    private boolean runImmediately;
 }
