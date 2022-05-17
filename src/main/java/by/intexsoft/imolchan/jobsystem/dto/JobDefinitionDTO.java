@@ -2,8 +2,10 @@ package by.intexsoft.imolchan.jobsystem.dto;
 
 import by.intexsoft.imolchan.jobsystem.validation.ValidCronExpression;
 import by.intexsoft.imolchan.jobsystem.views.CrudView;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -24,6 +26,8 @@ public class JobDefinitionDTO {
     private String cronExpression;
 
     @JsonView({CrudView.READ.class})
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime nextRun;
 
     @JsonView({CrudView.CREATE.class, CrudView.UPDATE.class, CrudView.READ.class})
