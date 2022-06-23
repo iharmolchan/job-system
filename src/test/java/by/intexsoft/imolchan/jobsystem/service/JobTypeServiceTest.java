@@ -4,10 +4,9 @@ import by.intexsoft.imolchan.jobsystem.config.MapperConfig;
 import by.intexsoft.imolchan.jobsystem.dto.JobTypeDTO;
 import by.intexsoft.imolchan.jobsystem.entity.JobType;
 import by.intexsoft.imolchan.jobsystem.exception.EntityNotFoundException;
-import by.intexsoft.imolchan.jobsystem.repository.JobTypeRepository;
+import by.intexsoft.imolchan.jobsystem.repository.JobTypeRepositoryTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
@@ -26,7 +25,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(SpringExtension.class)
 class JobTypeServiceTest {
     @MockBean
-    private JobTypeRepository jobTypeRepository;
+    private JobTypeRepositoryTest jobTypeRepositoryTest;
 
     @Autowired
     private JobTypeService jobTypeService;
@@ -38,14 +37,14 @@ class JobTypeServiceTest {
     void testSaveJobType() {
         JobType jobType = createSampleEntity();
 
-        when(jobTypeRepository.save((JobType) any())).thenReturn(jobType);
+        when(jobTypeRepositoryTest.save((JobType) any())).thenReturn(jobType);
 
         JobTypeDTO actualSaveJobTypeResult = jobTypeService.saveJobType(new JobTypeDTO());
 
         assertEquals("Handler Name", actualSaveJobTypeResult.getHandlerName());
         assertEquals("Name", actualSaveJobTypeResult.getName());
         assertEquals(123L, actualSaveJobTypeResult.getId().longValue());
-        verify(jobTypeRepository).save((JobType) any());
+        verify(jobTypeRepositoryTest).save((JobType) any());
     }
 
     /**
@@ -57,10 +56,10 @@ class JobTypeServiceTest {
         JobType jobType = createSampleEntity();
 
         Optional<JobType> ofResult = Optional.of(jobType);
-        when(jobTypeRepository.findById((Long) any())).thenReturn(ofResult);
+        when(jobTypeRepositoryTest.findById((Long) any())).thenReturn(ofResult);
 
         assertEquals(jobTypeDTO, jobTypeService.getById(123L));
-        verify(this.jobTypeRepository).findById((Long) any());
+        verify(this.jobTypeRepositoryTest).findById((Long) any());
     }
 
     /**
@@ -68,9 +67,9 @@ class JobTypeServiceTest {
      */
     @Test
     void testGetByIdEntityNotFound() {
-        when(jobTypeRepository.findById((Long) any())).thenReturn(Optional.empty());
+        when(jobTypeRepositoryTest.findById((Long) any())).thenReturn(Optional.empty());
         assertThrows(EntityNotFoundException.class, () -> jobTypeService.getById(123L));
-        verify(this.jobTypeRepository).findById((Long) any());
+        verify(this.jobTypeRepositoryTest).findById((Long) any());
     }
 
     private JobTypeDTO createSampleDto() {
